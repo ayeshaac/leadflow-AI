@@ -1,69 +1,38 @@
-import Image from "next/image";
+import { ArrowRight, CalendarDays, Code2, Gauge, Menu, MessageSquareText, Play, Sparkles, Target, TrendingUp, UsersRound, ChevronRight } from "lucide-react";
+
+const steps = [
+  { number: "01", icon: MessageSquareText, title: "Capture", text: "Talk to every visitor instantly." },
+  { number: "02", icon: Target, title: "Qualify", text: "Ask smart questions about their needs, budget and timeline." },
+  { number: "03", icon: TrendingUp, title: "Convert", text: "Turn qualified leads into meetings." },
+];
+const features = [
+  { icon: MessageSquareText, title: "AI Chat", text: "Natural conversations that feel personal, on every page." },
+  { icon: Gauge, title: "Lead Scoring", text: "Know which prospects deserve your attention first." },
+  { icon: Code2, title: "CRM Ready", text: "Keep your pipeline moving with organized lead data." },
+  { icon: CalendarDays, title: "Appointment Booking", text: "Let your best leads pick a time that works." },
+];
+
+function Logo() {
+  return <a href="#top" className="flex items-center gap-2.5 text-sm font-bold tracking-tight text-white"><span className="flex h-7 w-7 items-center justify-center rounded-lg bg-lime-300 text-[11px] font-black text-black">LF</span><span>LeadFlow <span className="text-lime-300">AI</span></span></a>;
+}
+function Button({ children, outline = false }: { children: React.ReactNode; outline?: boolean }) {
+  return <a href="#demo" className={`group inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition hover:-translate-y-0.5 ${outline ? "border border-white/15 bg-white/[0.03] text-white hover:border-lime-300/50 hover:bg-white/[0.06]" : "bg-lime-300 text-black hover:bg-lime-200"}`}>{children}<ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" /></a>;
+}
+
+function ChatDemo() {
+  const messages = [
+    ["customer", "I need an e-commerce website."], ["ai", "Sure — what is your budget and timeline?"],
+    ["customer", "$2,500 and within 4 weeks."], ["ai", "Great. You look like a strong potential lead."],
+  ];
+  return <div className="lime-glow relative overflow-hidden rounded-2xl border border-white/10 bg-[#111413] p-4 sm:p-5"><div className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-lime-300/10 blur-3xl" /><div className="relative flex items-center justify-between border-b border-white/10 pb-4"><div className="flex items-center gap-3"><div className="relative flex h-9 w-9 items-center justify-center rounded-full bg-lime-300 text-xs font-bold text-black">LF<span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-[#111413] bg-lime-400" /></div><div><p className="text-sm font-semibold text-white">LeadFlow Agent</p><p className="flex items-center gap-1 text-[11px] text-lime-300"><span className="h-1.5 w-1.5 rounded-full bg-lime-300" /> Online now</p></div></div><span className="rounded-full border border-white/10 px-2.5 py-1 text-[10px] text-zinc-500">AI sales agent</span></div><div className="space-y-3 py-5 text-xs leading-5 sm:text-[13px]">{messages.map(([role, message]) => role === "customer" ? <div className="ml-auto max-w-[78%] rounded-2xl rounded-tr-sm bg-white/[0.08] px-3.5 py-2.5 text-zinc-200" key={message}>{message}</div> : <div className="flex max-w-[84%] gap-2" key={message}><span className="mt-1 h-5 w-5 shrink-0 rounded-full bg-lime-300/15 text-center text-[8px] leading-5 text-lime-300">LF</span><div className="rounded-2xl rounded-tl-sm border border-white/10 bg-[#191d1b] px-3.5 py-2.5 text-zinc-300">{message}</div></div>)}</div><div className="flex items-center justify-between rounded-xl border border-lime-300/20 bg-lime-300/[0.06] p-3"><div><p className="text-[10px] uppercase tracking-[0.16em] text-zinc-500">Lead score</p><p className="mt-0.5 text-xl font-bold text-white">87 <span className="text-xs font-normal text-zinc-500">/ 100</span></p></div><div className="text-right"><p className="text-[10px] uppercase tracking-[0.16em] text-zinc-500">Status</p><p className="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-lime-300"><span className="h-1.5 w-1.5 rounded-full bg-lime-300" />Hot Lead</p></div></div></div>;
+}
+
+function Dashboard() {
+  const stats = [{ label: "Total Leads", value: "34", change: "+18%", icon: UsersRound }, { label: "Hot Leads", value: "8", change: "+12%", icon: TrendingUp }, { label: "Meetings Booked", value: "5", change: "+24%", icon: CalendarDays }];
+  const leads = [["Ali", "Website", "$2,000", "86", "Hot Lead"], ["Sarah", "Branding", "$1,200", "72", "Warm"], ["John", "SEO", "$600", "45", "Cold"]];
+  return <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#111413] shadow-2xl shadow-black/20"><div className="flex items-center justify-between border-b border-white/10 px-4 py-3 sm:px-6"><div className="flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-red-400/70" /><span className="h-2 w-2 rounded-full bg-yellow-400/70" /><span className="h-2 w-2 rounded-full bg-lime-300/70" /></div><div className="flex gap-2"><span className="h-2 w-16 rounded-full bg-white/10" /><span className="h-2 w-8 rounded-full bg-white/10" /></div></div><div className="grid md:grid-cols-[165px_1fr]"><aside className="hidden border-r border-white/10 p-4 md:block"><p className="mb-7 text-xs font-bold text-white">LeadFlow <span className="text-lime-300">AI</span></p>{["Overview", "Leads", "Conversations", "Calendar"].map((item, index) => <div key={item} className={`mb-2 rounded-lg px-3 py-2 text-[11px] ${index === 0 ? "bg-lime-300/10 text-lime-300" : "text-zinc-600"}`}>{item}</div>)}</aside><main className="min-w-0 p-4 sm:p-6"><div className="mb-5 flex items-end justify-between"><div><p className="text-[10px] uppercase tracking-[0.15em] text-zinc-500">Tuesday, Sep 16, 2026</p><h3 className="mt-1 text-base font-semibold text-white">Good morning, Alex</h3></div><span className="hidden rounded-lg border border-white/10 px-3 py-2 text-[10px] text-zinc-500 sm:block">Last 30 days <ChevronRight className="ml-2 inline h-3 w-3" /></span></div><div className="grid grid-cols-3 gap-2 sm:gap-3">{stats.map(({ label, value, change, icon: Icon }) => <div key={label} className="rounded-xl border border-white/10 bg-white/[0.025] p-3 sm:p-4"><Icon className="mb-3 h-4 w-4 text-lime-300" /><p className="text-[10px] text-zinc-500">{label}</p><div className="mt-1 flex flex-wrap items-end gap-1.5"><span className="text-lg font-bold text-white sm:text-2xl">{value}</span><span className="text-[10px] text-lime-300">{change}</span></div></div>)}</div><div className="mt-5 overflow-x-auto"><div className="mb-3 flex items-center justify-between"><h4 className="text-xs font-semibold text-white">Recent leads</h4><span className="text-[10px] text-lime-300">View all <ArrowRight className="ml-1 inline h-3 w-3" /></span></div><table className="w-full min-w-[500px] text-left text-[11px]"><thead className="border-b border-white/10 text-[9px] uppercase tracking-wider text-zinc-600"><tr>{["Name", "Interest", "Budget", "Score", "Status"].map((heading) => <th className="pb-2 font-medium" key={heading}>{heading}</th>)}</tr></thead><tbody>{leads.map(([name, interest, budget, score, status]) => <tr className="border-b border-white/[0.06] text-zinc-400" key={name}><td className="py-3 font-medium text-white">{name}</td><td>{interest}</td><td>{budget}</td><td><span className={`font-semibold ${status === "Hot Lead" ? "text-lime-300" : status === "Warm" ? "text-yellow-300" : "text-zinc-400"}`}>{score}</span></td><td><span className={`rounded-full px-2 py-1 text-[9px] ${status === "Hot Lead" ? "bg-lime-300/10 text-lime-300" : status === "Warm" ? "bg-yellow-300/10 text-yellow-300" : "bg-white/10 text-zinc-500"}`}>{status}</span></td></tr>)}</tbody></table></div></main></div></div>;
+}
 
 export default function Home() {
-  return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+  return <div id="top" className="min-h-screen overflow-hidden"><header className="mx-auto flex max-w-6xl items-center justify-between px-5 py-5 lg:px-8"><Logo /><nav className="hidden items-center gap-8 text-xs text-zinc-500 md:flex"><a href="#features" className="transition hover:text-white">Features</a><a href="#demo" className="transition hover:text-white">Demo</a><a href="#pricing" className="transition hover:text-white">Pricing</a></nav><div className="hidden items-center gap-5 sm:flex"><a href="#login" className="text-xs text-zinc-400 transition hover:text-white">Login</a><a href="#demo" className="rounded-full border border-lime-300/30 px-4 py-2 text-xs font-semibold text-lime-300 transition hover:bg-lime-300 hover:text-black">Get Started</a></div><button className="text-zinc-300 sm:hidden" aria-label="Open menu"><Menu className="h-5 w-5" /></button></header><main><section className="mx-auto grid max-w-6xl items-center gap-12 px-5 pb-20 pt-14 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:pb-28 lg:pt-24"><div className="fade-up"><div className="mb-6 inline-flex items-center gap-2 rounded-full border border-lime-300/20 bg-lime-300/[0.06] px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.17em] text-lime-300"><Sparkles className="h-3 w-3" /> AI-powered lead generation</div><h1 className="max-w-2xl text-5xl font-semibold leading-[0.98] tracking-[-0.06em] text-white sm:text-6xl lg:text-[76px]">Turn Website Visitors Into <span className="text-lime-300">Paying Clients.</span></h1><p className="mt-6 max-w-lg text-base leading-7 text-zinc-400">An AI sales agent that qualifies leads, scores prospects, and books meetings 24/7.</p><div className="mt-8 flex flex-wrap gap-3"><Button>Build Your Agent</Button><Button outline><Play className="h-3.5 w-3.5 fill-current" />Watch Demo</Button></div><div className="mt-10 flex items-center gap-3 text-xs text-zinc-500"><div className="flex -space-x-2">{["A", "S", "J"].map((letter) => <span className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-[#090a0a] bg-zinc-700 text-[9px] font-semibold text-white" key={letter}>{letter}</span>)}</div><span><strong className="text-zinc-300">2,000+</strong> teams growing with LeadFlow</span></div></div><div id="demo" className="fade-up [animation-delay:150ms]"><ChatDemo /></div></section><section id="features" className="border-y border-white/[0.07] bg-white/[0.015]"><div className="mx-auto max-w-6xl px-5 py-20 lg:px-8"><div className="mb-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-lime-300">The simple way to grow</p><h2 className="max-w-md text-3xl font-semibold tracking-[-0.04em] text-white sm:text-4xl">From first hello to booked meeting.</h2></div><p className="max-w-xs text-sm leading-6 text-zinc-500">Let your AI agent handle the repetitive work while you focus on closing.</p></div><div className="grid gap-3 md:grid-cols-3">{steps.map(({ number, icon: Icon, title, text }) => <div className="group rounded-2xl border border-white/10 bg-[#0d0f0e] p-5 transition hover:-translate-y-1 hover:border-lime-300/30" key={title}><div className="mb-12 flex items-center justify-between"><span className="text-xs text-zinc-600">{number}</span><Icon className="h-5 w-5 text-lime-300" /></div><h3 className="text-lg font-semibold text-white">{title}</h3><p className="mt-2 max-w-xs text-sm leading-6 text-zinc-500">{text}</p></div>)}</div></div></section><section className="mx-auto max-w-6xl px-5 py-20 lg:px-8"><div className="mb-10 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between"><div><p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-lime-300">Your command center</p><h2 className="text-3xl font-semibold tracking-[-0.04em] text-white sm:text-4xl">Every lead. One clear view.</h2></div><p className="max-w-xs text-sm leading-6 text-zinc-500">See what is working, who is ready, and where to focus next.</p></div><Dashboard /></section><section className="border-t border-white/[0.07] bg-white/[0.015]"><div className="mx-auto max-w-6xl px-5 py-20 lg:px-8"><div className="mb-10"><p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-lime-300">Built for momentum</p><h2 className="text-3xl font-semibold tracking-[-0.04em] text-white sm:text-4xl">Everything you need to close the gap.</h2></div><div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{features.map(({ icon: Icon, title, text }) => <div className="rounded-2xl border border-white/10 bg-[#0d0f0e] p-5" key={title}><Icon className="h-5 w-5 text-lime-300" /><h3 className="mt-12 text-sm font-semibold text-white">{title}</h3><p className="mt-2 text-xs leading-5 text-zinc-500">{text}</p></div>)}</div></div></section><section id="pricing" className="mx-auto max-w-6xl px-5 py-20 lg:px-8"><div className="relative overflow-hidden rounded-3xl border border-lime-300/20 bg-lime-300/[0.06] px-6 py-14 text-center sm:px-10"><div className="absolute left-1/2 top-0 h-40 w-96 -translate-x-1/2 rounded-full bg-lime-300/10 blur-3xl" /><div className="relative"><p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-lime-300">Ready when you are</p><h2 className="mx-auto max-w-xl text-4xl font-semibold tracking-[-0.05em] text-white sm:text-5xl">Start Converting More Leads Today</h2><p className="mx-auto mt-4 max-w-md text-sm leading-6 text-zinc-400">Give every visitor a reason to start a conversation.</p><div className="mt-7"><Button>Launch Your Agent</Button></div></div></div></section></main><footer className="border-t border-white/[0.07]"><div className="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-8 sm:flex-row sm:items-center sm:justify-between lg:px-8"><Logo /><div className="flex flex-wrap gap-x-6 gap-y-3 text-xs text-zinc-600"><a href="#features" className="hover:text-white">Features</a><a href="#demo" className="hover:text-white">Demo</a><a href="#pricing" className="hover:text-white">Pricing</a><a href="#support" className="hover:text-white">Support</a></div><p className="text-[10px] text-zinc-700">© 2026 LeadFlow AI</p></div></footer></div>;
 }

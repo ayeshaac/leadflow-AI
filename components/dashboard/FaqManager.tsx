@@ -1,0 +1,24 @@
+"use client";
+
+import { FormEvent, useState } from "react";
+import { Pencil, Plus, Trash2 } from "lucide-react";
+import type { Faq } from "../../types/business";
+
+type Props = { faqs: Faq[]; onChanged: () => void };
+type FormValues = { question: string; answer: string; active: boolean };
+const blank: FormValues = { question: "", answer: "", active: true };
+
+export default function FaqManager({ faqs, onChanged }: Props) {
+  const [form, setForm] = useState<FormValues>(blank);
+  const [editingId, setEditingId] = useState<string | undefined>();
+  const [saving, setSaving] = useState(false);
+  const [message, setMessage] = useState("");
+
+  function edit(faq: Faq) { setEditingId(faq.id); setForm({ question: faq.question, answer: faq.answer, active: faq.active }); }
+  function clear() { setEditingId(undefined); setForm(blank); }
+  async function save(event: FormEvent) { event.preventDefault(); setSaving(true); setMessage(""); const response = await fetch("/api/dashboard/knowledge", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ kind: "faq", data: { id: editingId, ...form } }) }); const body = await response.json().catch(() => null) as { error?: string } | null; setMessage(response.ok ? "FAQ saved." : body?.error ?? "Unable to save FAQ."); setSaving(false); if (response.ok) { clear(); onChanged(); } }
+  async function remove(id: string) { if (!window.confirm("Delete this FAQ?")) return; const response = await fetch("/api/dashboard/knowledge", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ kind: "faq", id }) }); if (!response.ok) { setMessage("Unable to delete FAQ."); return; } onChanged(); }
+  async function toggle(faq: Faq) { const response = await fetch("/api/dashboard/knowledge", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ kind: "faq", data: { id: faq.id, question: faq.question, answer: faq.answer, active: !faq.active } }) }); if (!response.ok) { setMessage("Unable to update FAQ."); return; } onChanged(); }
+
+  return <section className="rounded-2xl border border-white/10 bg-[#111413] p-5"><div className="mb-5"><h2 className="text-sm font-semibold text-white">FAQs</h2><p className="mt-1 text-xs text-zinc-600">Use concise answers the AI can safely repeat.</p></div><div className="space-y-2">{faqs.map((faq) => <div className="rounded-xl border border-white/10 bg-white/3 p-3" key={faq.id}><div className="flex items-start justify-between gap-3"><div className="min-w-0"><div className="flex items-center gap-2"><p className={`text-sm font-medium ${faq.active ? "text-white" : "text-zinc-600 line-through"}`}>{faq.question}</p><span className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] ${faq.active ? "bg-lime-300/10 text-lime-300" : "bg-white/10 text-zinc-600"}`}>{faq.active ? "Active" : "Off"}</span></div><p className="mt-1 text-xs leading-5 text-zinc-500">{faq.answer}</p></div><div className="flex shrink-0 gap-1"><button aria-label={`Edit ${faq.question}`} className="rounded-lg p-2 text-zinc-500 hover:bg-white/10 hover:text-white" onClick={() => edit(faq)} type="button"><Pencil className="h-3.5 w-3.5" /></button><button className="rounded-lg p-2 text-zinc-500 hover:bg-white/10 hover:text-white" onClick={() => void toggle(faq)} type="button">{faq.active ? "Disable" : "Enable"}</button><button aria-label={`Delete ${faq.question}`} className="rounded-lg p-2 text-red-300/70 hover:bg-red-300/10 hover:text-red-200" onClick={() => void remove(faq.id)} type="button"><Trash2 className="h-3.5 w-3.5" /></button></div></div></div>)}</div><form className="mt-5 border-t border-white/10 pt-5" onSubmit={save}><h3 className="text-xs font-semibold text-white">{editingId ? "Edit FAQ" : "Add FAQ"}</h3><div className="mt-3 space-y-3"><input className="w-full rounded-xl border border-white/10 bg-white/3 px-3 py-2.5 text-sm text-white outline-none focus:border-lime-300/50" onChange={(event) => setForm({ ...form, question: event.target.value })} placeholder="Question" value={form.question} /><textarea className="min-h-20 w-full rounded-xl border border-white/10 bg-white/3 px-3 py-2.5 text-sm text-white outline-none focus:border-lime-300/50" onChange={(event) => setForm({ ...form, answer: event.target.value })} placeholder="Answer" value={form.answer} /></div><div className="mt-3 flex items-center justify-between"><p className="text-xs text-lime-300">{message}</p><div className="flex gap-2">{editingId && <button className="rounded-full border border-white/15 px-4 py-2 text-xs text-zinc-300" onClick={clear} type="button">Cancel</button>}<button className="inline-flex items-center gap-2 rounded-full bg-lime-300 px-4 py-2 text-xs font-semibold text-black hover:bg-lime-200 disabled:opacity-50" disabled={saving} type="submit"><Plus className="h-3.5 w-3.5" />{saving ? "Saving..." : editingId ? "Update FAQ" : "Add FAQ"}</button></div></div></form></section>;
+}
